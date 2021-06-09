@@ -127,25 +127,20 @@ def creer_seq(ligne):
 def recupere_zipper(seq_aa,aa_choisis):
 	a=0
 	list_a_renvoyer=[]
-	while a!=len(seq_aa)-5:
+	chaine_intermediaire=""
+	chaine_a_renvoyer=""
+	while a!=len(seq_aa)-6:
+		print("voici la chaine intermediaire : "+str(chaine_a_renvoyer),"\n")
 		list_possible_zipper=[] #On va couper la chaine de caractere et si il s'avere que c'est un zipper alors on la rangera dans chaine a renvoyer, puis si la chaine qui la suis s'avere suivre le meme pattern alors on concatenera les deux chaines, et si la chaine qui suis la precedente ne suis pas le meme pattern on rangera alors notre chaine dans la liste à retourner
-		chaine_intermediaire=""
-		chaine_a_renvoyer=""
-		for i in range(a,a+6):
+		for i in range(a,a+7):
 			chaine_intermediaire+=seq_aa[i]
-		if chaine_intermediaire[0]==aa_choisis:
-			if chaine_intermediaire[1] in aa and chaine_intermediaire[2] in aa:
-				if chaine_intermediaire[3]==aa_choisis:
-					if chaine_intermediaire[1] in aa and chaine_intermediaire[2] in aa and chaine_intermediaire[3] :
-						chaine_a_renvoyer+=chaine_intermediaire
-					else :
-						list_a_renvoyer.append(chaine_a_renvoyer)
-				else :
-					list_a_renvoyer.append(chaine_a_renvoyer)
-			else :
-				list_a_renvoyer.append(chaine_a_renvoyer)
-		else:
+		if chaine_intermediaire[0]==aa_choisis and chaine_intermediaire[3]==aa_choisis:
+			chaine_a_renvoyer+=chaine_intermediaire
+			chaine_intermediaire=""
+		else :
 			list_a_renvoyer.append(chaine_a_renvoyer)
+			chaine_intermediaire=""
+			chaine_a_renvoyer=""
 		a+=1
 	return(list_a_renvoyer)
 
@@ -183,6 +178,7 @@ def domaine_html(domain_list,sC) :
 		sC.write("\t \t <td>")
 		domaine=("\t"+"\t"+i)
 		sC.write(domaine)
+		sC.write("*")
 		sC.write("\t \t </td> \n")
 		sC.write("\t </tr> \n")
 	sC.write("</table> \n \n")
@@ -221,7 +217,7 @@ def print_aa(list_line,saut_de_ligne):
 			terme="<FONT SIZE=2pt face=Times New Roman>"+list_line[k]+"</FONT>"
 			sC.write(terme)
 		saut_de_ligne+=1
-		if saut_de_ligne==nb_aa_sur_ligne:
+		if saut_de_ligne==nb_aa_sur_ligne+1:
 			sC.write("<br>")
 			saut_de_ligne=1
 	return(saut_de_ligne)
@@ -236,32 +232,17 @@ for i in range(1,len(ligne)) :	#On commence a 1 car la premiere ligne du fichier
 	list_line=list(ligne[i])
 	sdl=print_aa(list_line,saut_de_ligne)
 	saut_de_ligne=sdl
+
+nouvelle_ligne=ligne.copy()
+del nouvelle_ligne[0]
 #main 2 : transmembrane domains
 sC.write("<br>")
-domain_list=(recupere_domaine(creer_seq(ligne)))
+domain_list=(recupere_domaine(creer_seq(nouvelle_ligne)))
 domaine_html(domain_list,sC)
 
-#main 3 zipper leucine
-print(recupere_zipper(creer_seq(ligne),aa_choisis))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#Main 3 : zipper
+print(recupere_zipper(creer_seq(nouvelle_ligne),aa_choisis))
+#impression des légendes
 sC.write("<br>")
 sC.write("<br>")
 sC.write("<br>")
