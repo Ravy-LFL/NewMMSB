@@ -144,6 +144,25 @@ def recupere_zipper(seq_aa,aa_choisis):
 		a+=7
 	return(list_a_renvoyer)
 
+def recupere_zipper_beta(seq_aa,aa_choisis):
+	a=0
+	list_a_renvoyer=[]
+	chaine_test=""
+	chaine_a_renvoyer=""
+	while a<=len(seq_aa)-6:
+		for i in range(a,a+7):
+			chaine_test+=seq_aa[i]
+		if chaine_test[0]==aa_choisis and chaine_test[3]==aa_choisis:
+			chaine_a_renvoyer+=chaine_test
+			chaine_test=""
+			a+=7
+		else:
+			list_a_renvoyer.append(chaine_a_renvoyer)
+			chaine_a_renvoyer=""
+			chaine_test=""
+			a+=1
+	return(list_a_renvoyer)
+
 def recupere_domaine(seq_aa):
 	a=0
 	list_a_renvoyer=[]
@@ -230,7 +249,6 @@ for i in range(1,len(ligne)) :	#On commence a 1 car la premiere ligne du fichier
 	list_line=list(ligne[i])
 	sdl=print_aa(list_line,saut_de_ligne)
 	saut_de_ligne=sdl
-
 nouvelle_ligne=ligne.copy()
 new_line=[]
 for i in nouvelle_ligne :
@@ -245,10 +263,10 @@ sC.write("<br>")
 domain_list=(recupere_domaine(creer_seq(new_line)))
 domaine_html(domain_list,sC)
 print(creer_seq(new_line))
-#Main 3 : zipper
-liste_a_zipper=(recupere_zipper(creer_seq(new_line),aa_choisis))
-print(liste_a_zipper)
 
+#Main 3 : zipper
+liste_a_zipper=(recupere_zipper_beta(creer_seq(new_line),aa_choisis))
+print(liste_a_zipper)
 #impression des légendes
 sC.write("<br>")
 sC.write("<br>")
