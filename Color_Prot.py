@@ -15,7 +15,6 @@ nuevo_nombre=new_name[0]
 sC=open(nuevo_nombre+".html","w")
 compteur=1
 
-
                         #Création des différentes listes et des différents dictionnaire
 Basique=['K','R']
 Acide=['E','D']
@@ -69,6 +68,7 @@ if change_col=='o':
 nb_aa_sur_Ligne=input("type the number of aa you want on a line : ")
 nb_aa_sur_ligne=int(nb_aa_sur_Ligne)
 aa_choisis=input("type the aa of the zipper you're searching for : ")
+
 def createur_debut_html(sC):
     sC.write("<HTML>")
     sC.write("\n")
@@ -129,19 +129,19 @@ def recupere_zipper(seq_aa,aa_choisis):
 	list_a_renvoyer=[]
 	chaine_intermediaire=""
 	chaine_a_renvoyer=""
-	while a!=len(seq_aa)-6:
-		print("voici la chaine intermediaire : "+str(chaine_a_renvoyer),"\n")
-		list_possible_zipper=[] #On va couper la chaine de caractere et si il s'avere que c'est un zipper alors on la rangera dans chaine a renvoyer, puis si la chaine qui la suis s'avere suivre le meme pattern alors on concatenera les deux chaines, et si la chaine qui suis la precedente ne suis pas le meme pattern on rangera alors notre chaine dans la liste à retourner
+	while a!=len(seq_aa)-4: #On va couper la chaine de caractere et si il s'avere que c'est un zipper alors on la rangera dans chaine a renvoyer, puis si la chaine qui la suis s'avere suivre le meme pattern alors on concatenera les deux chaines, et si la chaine qui suis la precedente ne suis pas le meme pattern on rangera alors notre chaine dans la liste à retourner
 		for i in range(a,a+7):
 			chaine_intermediaire+=seq_aa[i]
+		print("voici la chaine intermediaire : "+str(chaine_intermediaire))
 		if chaine_intermediaire[0]==aa_choisis and chaine_intermediaire[3]==aa_choisis:
 			chaine_a_renvoyer+=chaine_intermediaire
 			chaine_intermediaire=""
+			print("voici la chaine a renvoyer : "+str(chaine_a_renvoyer))
 		else :
 			list_a_renvoyer.append(chaine_a_renvoyer)
 			chaine_intermediaire=""
 			chaine_a_renvoyer=""
-		a+=1
+		a+=7
 	return(list_a_renvoyer)
 
 def recupere_domaine(seq_aa):
@@ -163,8 +163,6 @@ def recupere_domaine(seq_aa):
 			for k in list_possible_domaine :
 						chaine_a_renvoyer+=k
 			list_a_renvoyer.append(chaine_a_renvoyer)
-		else :
-			print('0')
 		a+=1
 	return(list_a_renvoyer)
 
@@ -234,14 +232,23 @@ for i in range(1,len(ligne)) :	#On commence a 1 car la premiere ligne du fichier
 	saut_de_ligne=sdl
 
 nouvelle_ligne=ligne.copy()
-del nouvelle_ligne[0]
+new_line=[]
+for i in nouvelle_ligne :
+	new_element=i.split('\n')
+	new_line.append(new_element[0])
+del new_line[0]
+print("voici la nouvelle liste appeler new_line : ",end="\t")
+print(new_line)
+
 #main 2 : transmembrane domains
 sC.write("<br>")
-domain_list=(recupere_domaine(creer_seq(nouvelle_ligne)))
+domain_list=(recupere_domaine(creer_seq(new_line)))
 domaine_html(domain_list,sC)
-
+print(creer_seq(new_line))
 #Main 3 : zipper
-print(recupere_zipper(creer_seq(nouvelle_ligne),aa_choisis))
+liste_a_zipper=(recupere_zipper(creer_seq(new_line),aa_choisis))
+print(liste_a_zipper)
+
 #impression des légendes
 sC.write("<br>")
 sC.write("<br>")
