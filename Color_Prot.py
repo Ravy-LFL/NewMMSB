@@ -2,10 +2,11 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
+import termcolor
 import webbrowser
-                        #Creation et ouverture des fichiers
+                        #Creation and opening of files
 if len(sys.argv) != 2 :
-	sys.exit("VEUILLEZ SAISIR LE PATH DE LA SEQUENCE A COLORIER A LA SUITE DE LA COMMANDE DE LANCEMENT DU RPOGRAMME")
+	sys.exit("PLEASE ENTER THE PATH OF THE SEQUENCE TO BE COLORED FOLLOWING THE COMMAND TO LAUNCH THE RPOGRAM")
 else :
 	sequence = sys.argv[1]
 s=open(sequence,"r")
@@ -15,7 +16,7 @@ nuevo_nombre=new_name[0]
 sC=open(nuevo_nombre+".html","w")
 compteur=1
 
-                        #Création des différentes listes et des différents dictionnaire
+                        #Creation of different lists and dictionaries
 Basique=['K','R']
 Acide=['E','D']
 Hydrophobes=['A','I','L','M','F','V','G','P']
@@ -23,7 +24,8 @@ Spe=['W','H',]
 Cys=['C']
 Polaire=['N','Q','S','T','Y']
 aa=['A','R','D','N','C','E','Q','G','H','I','L','K','M','F','P','S','T','W','Y','V']
-couleur={'red':'E61212','blue':'122FE6','grey':'555658','green':'00CB09','yellow':'E0EC1A','orange':'EC961A','pink':'DF1AEC','purple':'9C3CA2','brown':'A26D3C','grey_clear':'9BA9AB','cyan':'0CF3F0'}
+#IF YOU WANNA ADD A COLOR, JUST ADD IT TO THE DICTIONARY BELOW WITH HIS HEXADECIMAL CODE
+couleur={'red':'E61212','blue':'122FE6','grey':'555658','green':'00CB09','yellow':'E0EC1A','orange':'EC961A','pink':'DF1AEC','purple':'9C3CA2','brown':'A26D3C','grey_clear':'9BA9AB','light_blue':'0CF3F0'}
 
 '''
 lysine,arginine = acides aminés basique
@@ -32,36 +34,39 @@ alanine, isoleucine, leucine, méthionine, phénylalanine, valine, tyrosine, c
 tryptophane et hystidine
 asparagine,glutamine,glycine,proline,serine,thréonine= acide aminés polaire
 '''
-print("voici le code couleur par défaut : gris = acides aminés hydrophobe","\n","rouge = acide ", "\n", " bleu = basique","\n","jaune = tryptophane et hystidine","\n","vert = Polaire","\n","marron = indice des isoleucines","\n","orange = indice des leucines")
-change_col=input("si vous voulez modifier ces couleurs appuyez sur y sinon appuyez sur n ( surtout ne pas taper la lettre 'o' ! ): ")
+print("here is the default color code : grey = hydrophobic amino acids","\n","red = acid ", "\n", "blue = basic","\n","light_blue = tryptophan and hystidine","\n","gren = Polar","\n","pink = isoleucine index","\n","pink = leucine index","\n", "yellow = cystein")
+change_col=input("if you want to change these colors press y otherwise press n (do not type the letter 'o'!): ")
 
-                    #Interface utilisateur pour saisir des nouvelles couleurs ou non
+                    #User interface to enter new colors or not
 if change_col == 'n' :
     hydrophobe=couleur['grey_clear']
     acide=couleur['red']
     basique=couleur['blue']
-    spe=couleur['cyan']
+    spe=couleur['light_blue']
     polaire=couleur['green']
     leucine=couleur['pink']
     isoleucine=couleur['pink']
     cysteine=couleur['yellow']
 if change_col == 'y' :
-    HYDROPHOBE=input("saisissez le nom de la couleur associer aux acides aminés hydrophobes : ")
-    ACIDE=input("saisissez le nom de la couleur associer aux acides aminés acide : ")
-    BASIQUE=input("saisissez le nom de la couleur associer aux acides aminés basique : ")
-    SPE=input("saisissez le nom de la couleur associer aux tryptophane et à l'hystidine : ")
-    POLAIRE=input("saisissez le nom de la couleur associer aux acides aminés polaire : ")
-    LEUCINE=input("saisissez le nom de la couleur associer aux leucines : ")
-    ISOLEUCINE=input("saisissez le nom de la couleur associer aux isoleucines : ")
-    CYSTEINE=input("saisissez le nom de la couleur associer aux cysteine :")
-    cysteine=couleur[CYSTEINE]
-    hydrophobe=couleur[HYDROPHOBE]
-    acide=couleur[ACIDE]
-    basique=couleur[BASIQUE]
-    spe=couleur[SPE]
-    polaire=couleur[POLAIRE]
-    leucine=couleur[LEUCINE]
-    isoleucine=couleur[ISOLEUCINE]
+	print("you choose to change the colors, here the possibilities, if you want to add a color , fund the dictionnary in the script at the line 26 :")
+	for i in couleur.keys() :
+		print(i)
+	HYDROPHOBE=input("enter the name of the color associated with hydrophobic amino acids : ")
+	ACIDE=input("enter the name of the color associated with the acidic amino acids : ")
+	BASIQUE=input("enter the name of the color associated with basic amino acids : ")
+	SPE=input("enter the name of the color associated with tryptophan and hystidine : ")
+	POLAIRE=input("enter the name of the color associated with polar amino acids : ")
+	LEUCINE=input("enter the name of the color associated with leucines : ")
+	ISOLEUCINE=input("enter the name of the color associated with isoleucines : ")
+	CYSTEINE=input("enter the name of the color associated with cysteine :")
+	cysteine=couleur[CYSTEINE]
+	hydrophobe=couleur[HYDROPHOBE]
+	acide=couleur[ACIDE]
+	basique=couleur[BASIQUE]
+	spe=couleur[SPE]
+	polaire=couleur[POLAIRE]
+	leucine=couleur[LEUCINE]
+	isoleucine=couleur[ISOLEUCINE]
 if change_col=='o':
     webbrowser.open("https://www.youtube.com/watch?v=Lrj2Hq7xqQ8")
 
@@ -124,32 +129,14 @@ def creer_seq(ligne):
 			seq_aa+=j
 	return(seq_aa)
 
-def recupere_zipper(seq_aa,aa_choisis):
-	a=0
-	list_a_renvoyer=[]
-	chaine_intermediaire=""
-	chaine_a_renvoyer=""
-	while a!=len(seq_aa)-4: #On va couper la chaine de caractere et si il s'avere que c'est un zipper alors on la rangera dans chaine a renvoyer, puis si la chaine qui la suis s'avere suivre le meme pattern alors on concatenera les deux chaines, et si la chaine qui suis la precedente ne suis pas le meme pattern on rangera alors notre chaine dans la liste à retourner
-		for i in range(a,a+7):
-			chaine_intermediaire+=seq_aa[i]
-		print("voici la chaine intermediaire : "+str(chaine_intermediaire))
-		if chaine_intermediaire[0]==aa_choisis and chaine_intermediaire[3]==aa_choisis:
-			chaine_a_renvoyer+=chaine_intermediaire
-			chaine_intermediaire=""
-			print("voici la chaine a renvoyer : "+str(chaine_a_renvoyer))
-		else :
-			list_a_renvoyer.append(chaine_a_renvoyer)
-			chaine_intermediaire=""
-			chaine_a_renvoyer=""
-		a+=7
-	return(list_a_renvoyer)
 
 def recupere_zipper_beta(seq_aa,aa_choisis):
 	a=0
 	list_a_renvoyer=[]
 	chaine_test=""
 	chaine_a_renvoyer=""
-	while a<=len(seq_aa)-6:
+	derniere_chaine=""
+	while a<=len(seq_aa)-8:
 		for i in range(a,a+7):
 			chaine_test+=seq_aa[i]
 		if chaine_test[0]==aa_choisis and chaine_test[3]==aa_choisis:
@@ -161,6 +148,10 @@ def recupere_zipper_beta(seq_aa,aa_choisis):
 			chaine_a_renvoyer=""
 			chaine_test=""
 			a+=1
+	for i in range(len(seq_aa)-7,len(seq_aa)):
+		derniere_chaine+=seq_aa[i]
+	if derniere_chaine[0]==aa_choisis and derniere_chaine[3]==aa_choisis:
+		list_a_renvoyer.append(derniere_chaine)
 	return(list_a_renvoyer)
 
 def recupere_domaine(seq_aa):
@@ -186,6 +177,7 @@ def recupere_domaine(seq_aa):
 	return(list_a_renvoyer)
 
 def domaine_html(domain_list,sC) :
+	print("second step..")
 	sC.write("<table> \n")
 	sC.write("<tr> \n")
 	sC.write("<th> Hypothetic Transmembrane Domain </th> \n")
@@ -200,9 +192,26 @@ def domaine_html(domain_list,sC) :
 		sC.write("\t </tr> \n")
 	sC.write("</table> \n \n")
 
+def zipper_html(liste_a_zipper,sC):
+	print("last step..")
+	sC.write("<br>")
+	sC.write("<table> \n")
+	sC.write("<tr> \n")
+	sC.write("<th> Hypothetic Zipper Domain </th> \n")
+	sC.write("</tr> \n")
+	for i in liste_a_zipper :
+		if i!="":
+			sC.write("\t <tr>")
+			sC.write("\t \t <td>")
+			domaine=("\t"+"\t"+i)
+			sC.write(domaine)
+			sC.write("\t \t </td> \n")
+			sC.write("\t </tr> \n")
+	sC.write("</table> \n \n")
+
+
+
 def print_aa(list_line,saut_de_ligne):
-	#if saut_de_ligne==100 :
-	#	sC.write("<br>")
 	for k in range(0,len(list_line)-1) :
 		if list_line[k] in Basique :
 			terme="<Bas> <FONT SIZE=3pt face=Courier>"+list_line[k]+"</Bas>"
@@ -240,12 +249,13 @@ def print_aa(list_line,saut_de_ligne):
 	return(saut_de_ligne)
 
 #main
+print("first step...")
 ligne=s.readlines()
 mep_tab(sC)
 createur_debut_html(sC)
 couleur_background(sC)
 saut_de_ligne=1
-for i in range(1,len(ligne)) :	#On commence a 1 car la premiere ligne du fichier est le nom du fichier fasta, donc ne nous interesse pas
+for i in range(1,len(ligne)) :	#We start at 1 because the first line of the file is the name of the fasta file, so we are not interested
 	list_line=list(ligne[i])
 	sdl=print_aa(list_line,saut_de_ligne)
 	saut_de_ligne=sdl
@@ -267,36 +277,74 @@ print(creer_seq(new_line))
 #Main 3 : zipper
 liste_a_zipper=(recupere_zipper_beta(creer_seq(new_line),aa_choisis))
 print(liste_a_zipper)
-#impression des légendes
+zipper_html(liste_a_zipper,sC)
+
+#printing of legends
+print("printing legends..")
 sC.write("<br>")
 sC.write("<br>")
 sC.write("<br>")
 sC.write("<br>")
 sC.write("<br>")
 sC.write("<br>")
-sC.write("Legende : ")
+sC.write("Legends : ")
 sC.write("<br>")
-col_hydrophobe="<FONT COLOR="+hydrophobe+"> acides amines hydrophobes </FONT>"
+col_hydrophobe="<FONT COLOR="+hydrophobe+"> hydrophobic amino acids </FONT>"
 sC.write(col_hydrophobe)
 sC.write('<br>')
-col_acide="<FONT COLOR="+acide+"> acides amines acide </FONT>"
+col_acide="<FONT COLOR="+acide+"> acid amino acids </FONT>"
 sC.write(col_acide)
 sC.write("<br>")
-col_basique="<FONT COLOR="+basique+"> acides amines basique </FONT>"
+col_basique="<FONT COLOR="+basique+"> basics amino acids </FONT>"
 sC.write(col_basique)
 sC.write("<br>")
-col_spe="<FONT COLOR="+spe+"> acides amines trypthophane et hystidines </FONT>"
+col_spe="<FONT COLOR="+spe+"> tryptophan and hystidine </FONT>"
 sC.write(col_spe)
 sC.write("<br>")
-col_polaire="<FONT COLOR="+polaire+"> acides amines polaire </FONT>"
+col_polaire="<FONT COLOR="+polaire+"> polar amino acids </FONT>"
 sC.write(col_polaire)
 sC.write("<br>")
-col_leucine="<FONT COLOR="+leucine+"> indices leucines </FONT>"
+col_leucine="<FONT COLOR="+leucine+"> index leucine </FONT>"
 sC.write(col_leucine)
 sC.write("<br>")
-col_isoleucine="<FONT COLOR="+isoleucine+"> indices isoleucines </FONT>"
+col_isoleucine="<FONT COLOR="+isoleucine+"> index isoleucine </FONT>"
 sC.write(col_isoleucine)
 sC.write("<br>")
 createur_fin_html(sC)
+
+
+
+term=input("now maybe the html folder is not complete you can print a terminal version with typing y, else type n : ")
+if term == 'y' :
+	#printing with termcolor
+	b=0
+	for i in s :
+		b+=1
+		if b==nb_aa_sur_ligne:
+			fin="\n"
+			b=0
+		else :
+			fin=""
+		if i in Hydrophobes :
+			termcolor.cprint(i,hydrophobe,end=fin)
+		if i in Basique:
+			termcolor.cprint(i,basique,end=fin)
+		if i in Acide :
+			termcolor.cprint(i,acide,end=fin)
+		if i in Spe :
+			termcolor.cprint(i,spe,end=fin)
+		if i in Cys :
+			termcolor.cprint(i,cysteine,end=fin)
+		if i in Polaire :
+			termcolor.cprint(i,polaire,end=fin)
+
+	print("\n")
+	print(domain_list)
+	print("\n")
+	print(liste_a_zipper)
+else :
+	print(" you will find you're folder .html at the same place than Color_prot.py")
+
+
 sC.close()
 s.close()
