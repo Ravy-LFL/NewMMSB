@@ -6,7 +6,7 @@ import termcolor
 import webbrowser
                         #Creation and opening of files
 if len(sys.argv) != 2 :
-	sys.exit("PLEASE ENTER THE PATH OF THE SEQUENCE TO BE COLORED FOLLOWING THE COMMAND TO LAUNCH THE RPOGRAM")
+	sys.exit("PLEASE ENTER THE PATH OF THE SEQUENCE TO BE COLORED FOLLOWING THE COMMAND TO LAUNCH THE PROGRAM")
 else :
 	sequence = sys.argv[1]
 s=open(sequence,"r")
@@ -50,7 +50,7 @@ if change_col == 'n' :
 if change_col == 'y' :
 	print("you choose to change the colors, here the possibilities, if you want to add a color , fund the dictionnary in the script at the line 26 :")
 	for i in couleur.keys() :
-		print(i)
+		print(i, end="\t")
 	HYDROPHOBE=input("enter the name of the color associated with hydrophobic amino acids : ")
 	ACIDE=input("enter the name of the color associated with the acidic amino acids : ")
 	BASIQUE=input("enter the name of the color associated with basic amino acids : ")
@@ -265,18 +265,18 @@ for i in nouvelle_ligne :
 	new_element=i.split('\n')
 	new_line.append(new_element[0])
 del new_line[0]
-print("voici la nouvelle liste appeler new_line : ",end="\t")
-print(new_line)
+#print("voici la nouvelle liste appeler new_line : ",end="\t")
+#print(new_line)
 
 #main 2 : transmembrane domains
 sC.write("<br>")
 domain_list=(recupere_domaine(creer_seq(new_line)))
 domaine_html(domain_list,sC)
-print(creer_seq(new_line))
+#print(creer_seq(new_line))
 
 #Main 3 : zipper
 liste_a_zipper=(recupere_zipper_beta(creer_seq(new_line),aa_choisis))
-print(liste_a_zipper)
+#print(liste_a_zipper)
 zipper_html(liste_a_zipper,sC)
 
 #printing of legends
@@ -317,30 +317,39 @@ createur_fin_html(sC)
 term=input("now maybe the html folder is not complete you can print a terminal version with typing y, else type n : ")
 if term == 'y' :
 	#printing with termcolor
+	print("sequence aligned : ")
+	print(nb_aa_sur_ligne)
 	b=0
-	for i in s :
-		b+=1
-		if b==nb_aa_sur_ligne:
-			fin="\n"
-			b=0
-		else :
-			fin=""
-		if i in Hydrophobes :
-			termcolor.cprint(i,hydrophobe,end=fin)
-		if i in Basique:
-			termcolor.cprint(i,basique,end=fin)
-		if i in Acide :
-			termcolor.cprint(i,acide,end=fin)
-		if i in Spe :
-			termcolor.cprint(i,spe,end=fin)
-		if i in Cys :
-			termcolor.cprint(i,cysteine,end=fin)
-		if i in Polaire :
-			termcolor.cprint(i,polaire,end=fin)
-
+	fin=""
+	for i in new_line :
+		for j in i :
+			b+=1
+			if b==nb_aa_sur_ligne:
+				fin="\n"
+				b=0
+			else :
+				fin=""
+			if j in Hydrophobes :
+				termcolor.cprint(j,'white','on_grey',end=fin)
+			elif j in Hydrophobes and j=='L':
+				termcolor.cprint(j,'white','on_pink',end=fin)
+			elif j in Hydrophobes and j=='I' :
+				termcolor.cprint(j,'white','on_pink',end=fin)
+			elif j in Basique:
+				termcolor.cprint(j,'white','on_blue',end=fin)
+			elif j in Acide :
+				termcolor.cprint(j,'white','on_red',end=fin)
+			elif j in Spe :
+				termcolor.cprint(j,'white','on_cyan',end=fin)
+			elif j in Cys :
+				termcolor.cprint(j,'white','on_yellow',end=fin)
+			elif j in Polaire :
+				termcolor.cprint(j,'white','on_green',end=fin)
 	print("\n")
+	print("list of hypothetical transmembrane domains : ","\n")
 	print(domain_list)
 	print("\n")
+	print("list of hypothetical zipper : ","\n")
 	print(liste_a_zipper)
 else :
 	print(" you will find you're folder .html at the same place than Color_prot.py")
