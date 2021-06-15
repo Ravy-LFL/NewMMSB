@@ -130,7 +130,7 @@ def creer_seq(ligne):
 	return(seq_aa)
 
 
-def recupere_zipper_beta(seq_aa,aa_choisis):
+def recupere_zipper_beta(seq_aa,aa_choisis):									#trouver une solution pour que l'utilisateur puisse choisir de quel longueur il veut ses zipper//Nan bah ducoup quand il en vois un qui est grand il le prend donc c'est bon
 	a=0
 	list_a_renvoyer=[]
 	chaine_test=""
@@ -153,7 +153,7 @@ def recupere_zipper_beta(seq_aa,aa_choisis):
 	if derniere_chaine[0]==aa_choisis and derniere_chaine[3]==aa_choisis:
 		list_a_renvoyer.append(derniere_chaine)
 	return(list_a_renvoyer)
-
+'''
 def recupere_domaine(seq_aa):
 	a=0
 	list_a_renvoyer=[]
@@ -172,6 +172,32 @@ def recupere_domaine(seq_aa):
 		if compteur_hydrophobe>compteur_autres:
 			for k in list_possible_domaine :
 						chaine_a_renvoyer+=k
+			list_a_renvoyer.append(chaine_a_renvoyer)
+		a+=1
+	return(list_a_renvoyer)
+'''
+
+def recupere_domaine(seq_aa):
+	a=0
+	list_a_renvoyer=[]
+	while a!=len(seq_aa)-22:
+		etat = False
+		list_possible_domaine=[]
+		compteur_hydrophobe=0
+		compteur_autres=0
+		chaine_a_renvoyer=""
+		for i in range(a,a+22):
+			list_possible_domaine.append(seq_aa[i])
+		for j in list_possible_domaine:
+			if j in Hydrophobes :
+				compteur_hydrophobe+=1
+			else :
+				compteur_autres+=1
+		if list_possible_domaine[0] in Polaire or list_possible_domaine[len(list_possible_domaine)-1] in Polaire or list_possible_domaine[0] in Polaire and list_possible_domaine[len(list_possible_domaine)-1] in Polaire :
+			etat=True
+		if compteur_hydrophobe>compteur_autres and etat==True :
+			for k in range(1,len(list_possible_domaine)-2) :
+						chaine_a_renvoyer+=list_possible_domaine[k]
 			list_a_renvoyer.append(chaine_a_renvoyer)
 		a+=1
 	return(list_a_renvoyer)
