@@ -180,22 +180,27 @@ def recupere_domaine(seq_aa):
 def recupere_domaine(seq_aa):
 	a=0
 	list_a_renvoyer=[]
-	while a!=len(seq_aa)-22:
+	taux_acceptation=70
+	while a!=len(seq_aa)-24:
 		etat = False
-		list_possible_domaine=[]
-		compteur_hydrophobe=0
-		compteur_autres=0
-		chaine_a_renvoyer=""
-		for i in range(a,a+22):
+		etat_acceptation = False
+		list_possible_domaine =[]
+		compteur_hydrophobe = 0
+		compteur_autres= 0
+		chaine_a_renvoyer = ""
+		for i in range(a,a+24):
 			list_possible_domaine.append(seq_aa[i])
 		for j in list_possible_domaine:
 			if j in Hydrophobes :
 				compteur_hydrophobe+=1
 			else :
 				compteur_autres+=1
-		if list_possible_domaine[0] in Polaire or list_possible_domaine[len(list_possible_domaine)-1] in Polaire or list_possible_domaine[0] in Polaire and list_possible_domaine[len(list_possible_domaine)-1] in Polaire :
+		taux_hydrophobe=(compteur_hydrophobe*100)/len(list_possible_domaine)
+		if  taux_hydrophobe >= 69 :
+			etat_acceptation= True
+		if list_possible_domaine[0] in Polaire or list_possible_domaine[len(list_possible_domaine)-1] in Polaire or list_possible_domaine[0] in Polaire and list_possible_domaine[len(list_possible_domaine)-1] in Polaire or list_possible_domaine[0] in Spe and list_possible_domaine[len(list_possible_domaine)-1] in Spe or list_possible_domaine[len(list_possible_domaine)-1] in Spe or list_possible_domaine[0] in Spe or list_possible_domaine[0] in Spe and list_possible_domaine[len(list_possible_domaine)-1] in Hydrophobes or list_possible_domaine[0] in Hydrophobes and list_possible_domaine[len(list_possible_domaine)-1] in Spe :
 			etat=True
-		if compteur_hydrophobe>compteur_autres and etat==True :
+		if compteur_hydrophobe>compteur_autres and etat_acceptation == True and etat == True:
 			for k in range(1,len(list_possible_domaine)-2) :
 						chaine_a_renvoyer+=list_possible_domaine[k]
 			list_a_renvoyer.append(chaine_a_renvoyer)
@@ -338,7 +343,7 @@ sC.write(col_isoleucine)
 sC.write("<br>")
 createur_fin_html(sC)
 
-
+#or list_possible_domaine[0] in Spe and list_possible_domaine[len(list_possible_domaine)-1] in Hydrophobes or list_possible_domaine[0] in Hydrophobes and list_possible_domaine[len(list_possible_domaine)-1] in Spe :
 
 term=input("now maybe the html folder is not complete you can print a terminal version with typing y, else type n : ")
 if term == 'y' :
