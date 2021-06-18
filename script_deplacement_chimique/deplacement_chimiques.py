@@ -1,6 +1,8 @@
 #!/usr/local/bin/python3
 # -*- coding: utf-8 -*-
 import sys
+import matplotlib.pyplot as plt
+import os
 if len(sys.argv) != 3 :
     print("please enter the path of the two folders")
 else :
@@ -17,11 +19,11 @@ F2=f2.readlines()
 
 #Format d'une ligne : "NumeroResidu.Atome Déplacement 0/n"
 #Mise en page du premier fichier a fin de le rendre utilisable, on a créer une liste contenant plusieurs liste contenant elle meme en index[0]: residu+Atome et en index[1]:CS+0
+print("\n =========== New folder =========== \n")
 nouveau_f1=[]
 nueva_f1=[]
 for i in F1 :
     new_F1=i.split("\n")
-    print(new_F1)
     nouveau_f1.append(new_F1[0])
 for i in nouveau_f1:
     new_element=i.split("      ")
@@ -39,7 +41,6 @@ nouveau_f2=[]
 nueva_f2=[]
 for i in F2 :
     new_F2=i.split("\n")
-    print(new_F2)
     nouveau_f2.append(new_F2[0])
 for i in nouveau_f2:
     new_element=i.split("      ")
@@ -61,8 +62,9 @@ fresult.write('Cs1')
 fresult.write('\t')
 fresult.write('Cs2')
 fresult.write('\t')
-fresult.write('\t')
 fresult.write('Diff')
+fresult.write('\t')
+fresult.write('ratio_gyromagnetic')
 fresult.write('\n')
 
 #Comparaison + écriture du fichier de sortie
@@ -96,23 +98,32 @@ for i in le_nouveau_f1:
             fresult.write('\t')
             fresult.write(Cs2_str)
             fresult.write('\t')
-            fresult.write('\t')
             fresult.write(diff_str)
+            fresult.write('\t')
+            fresult.write('\t')
+            if 'C' in atom :                                        #ECRITURE NOUVEL COLONNE SELON RAPPORT GYROMA
+                ratio=diff*0.25144953
+                ratio_round=round(ratio,3)
+                ratio_str=str(ratio_round)
+            elif 'N' in atom :
+                ratio=diff*0.101329118
+                ratio_round=round(ratio,3)
+                ratio_str=str(ratio_round)
+            else :
+                ratio_str='none'
+            fresult.write(ratio_str)
             fresult.write('\n')
 
+#Création de l'histogramme
+fig1, ax=plt.subplots(figsize=(10,6))
+bar_width = 1.0
+plt.title("CSPs for "+fichier1+" "+"and "+fichier2)
+plt.xlabel('Residue number', fontsize=12)
+plt.ylabel('CSP (ppm)', fontsize=12)
+plt.show()
 
 
 
-
-
-
-
-
-print("voici F1 :")
-print(le_nouveau_f1[0][0][2])
-print("\n")
-print("voici F2 :")
-print(le_nouveau_f2)
 
 
 f1.close()
