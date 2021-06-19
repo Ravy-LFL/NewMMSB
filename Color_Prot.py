@@ -72,7 +72,6 @@ if change_col=='o':
 
 nb_aa_sur_Ligne=input("type the number of aa you want on a line : ")
 nb_aa_sur_ligne=int(nb_aa_sur_Ligne)
-aa_choisis=input("type the aa of the zipper you're searching for : ")
 
 def createur_debut_html(sC):
     sC.write("<HTML>")
@@ -104,20 +103,7 @@ def createur_fin_html(sC):
     sC.write("</HEAD>")
     sC.write("/HTML")
 
-'''
-def print_compteur(list_line,compteur):
-    for i in range(0,(len(list_line))):
-        if list_line[i]=='L' :
-            termenb="<FONT COLOR="+LeuIso['leucine']+">"+str(compteur)+"&ensp;"+"</FONT>"
-            sC.write(termenb)
-        elif list_line[i]=='I' :
-            termenb="<FONT COLOR="+LeuIso['isoleucine']+">"+str(compteur)+"&ensp;"+"</FONT>"
-            sC.write(termenb)
-        else :
-            termenb="&ensp;&ensp;"
-            sC.write(termenb)
-        compteur+=1
-'''
+
 
 def creer_seq(ligne):
 	seq_aa=""
@@ -130,7 +116,7 @@ def creer_seq(ligne):
 	return(seq_aa)
 
 
-def recupere_zipper_beta(seq_aa,aa_choisis):									#trouver une solution pour que l'utilisateur puisse choisir de quel longueur il veut ses zipper//Nan bah ducoup quand il en vois un qui est grand il le prend donc c'est bon
+def recupere_zipper_beta(seq_aa):									#trouver une solution pour que l'utilisateur puisse choisir de quel longueur il veut ses zipper//Nan bah ducoup quand il en vois un qui est grand il le prend donc c'est bon
 	a=0
 	list_a_renvoyer=[]
 	chaine_test=""
@@ -139,7 +125,7 @@ def recupere_zipper_beta(seq_aa,aa_choisis):									#trouver une solution pour 
 	while a<=len(seq_aa)-8:
 		for i in range(a,a+7):
 			chaine_test+=seq_aa[i]
-		if chaine_test[0]==aa_choisis and chaine_test[3]==aa_choisis:
+		if chaine_test[0]=='L' and chaine_test[3]=='L' or chaine_test[0] == 'I' and chaine_test[3] == 'I' or chaine_test[0] == 'L' and chaine_test[3] == 'I' or chaine_test[0] == 'I' and chaine_test[3] == 'L':
 			chaine_a_renvoyer+=chaine_test
 			chaine_test=""
 			a+=7
@@ -150,34 +136,12 @@ def recupere_zipper_beta(seq_aa,aa_choisis):									#trouver une solution pour 
 			a+=1
 	for i in range(len(seq_aa)-7,len(seq_aa)):
 		derniere_chaine+=seq_aa[i]
-	if derniere_chaine[0]==aa_choisis and derniere_chaine[3]==aa_choisis:
+	if derniere_chaine[0]=='L' and derniere_chaine[3]=='L' or derniere_chaine[0] == 'I' and derniere_chaine[3] == 'I' or derniere_chaine[0] == 'L' and derniere_chaine[3] == 'I' or derniere_chaine[0] == 'I' and derniere_chaine[3] == 'L':
 		list_a_renvoyer.append(derniere_chaine)
 	return(list_a_renvoyer)
-'''
-def recupere_domaine(seq_aa):
-	a=0
-	list_a_renvoyer=[]
-	while a!=len(seq_aa)-21:
-		list_possible_domaine=[]
-		compteur_hydrophobe=0
-		compteur_autres=0
-		chaine_a_renvoyer=""
-		for i in range(a,a+20):
-			list_possible_domaine.append(seq_aa[i])
-		for j in list_possible_domaine:
-			if j in Hydrophobes :
-				compteur_hydrophobe+=1
-			else :
-				compteur_autres+=1
-		if compteur_hydrophobe>compteur_autres:
-			for k in list_possible_domaine :
-						chaine_a_renvoyer+=k
-			list_a_renvoyer.append(chaine_a_renvoyer)
-		a+=1
-	return(list_a_renvoyer)
-'''
 
-def recupere_domaine(seq_aa):
+
+def recupere_domaine(seq_aa):		#Return a list of potential transmembrane domain, this domain have a lenght of 21 and have one or two hydrophil amino acid on there board, a transmembrane domain also have more than 69% of hydrophobics amino acid
 	a=0
 	list_a_renvoyer=[]
 	taux_acceptation=70
@@ -279,36 +243,37 @@ def print_aa(list_line,saut_de_ligne):
 			saut_de_ligne=1
 	return(saut_de_ligne)
 
-#main
+
+
 print("first step...")
 ligne=s.readlines()
 mep_tab(sC)
 createur_debut_html(sC)
 couleur_background(sC)
 saut_de_ligne=1
-for i in range(1,len(ligne)) :	#We start at 1 because the first line of the file is the name of the fasta file, so we are not interested
-	list_line=list(ligne[i])
-	sdl=print_aa(list_line,saut_de_ligne)
-	saut_de_ligne=sdl
+
 nouvelle_ligne=ligne.copy()
 new_line=[]
 for i in nouvelle_ligne :
 	new_element=i.split('\n')
 	new_line.append(new_element[0])
 del new_line[0]
-#print("voici la nouvelle liste appeler new_line : ",end="\t")
-#print(new_line)
 
-#main 2 : transmembrane domains
+#main 1 : transmembrane domains
 sC.write("<br>")
 domain_list=(recupere_domaine(creer_seq(new_line)))
 domaine_html(domain_list,sC)
-#print(creer_seq(new_line))
 
-#Main 3 : zipper
-liste_a_zipper=(recupere_zipper_beta(creer_seq(new_line),aa_choisis))
-#print(liste_a_zipper)
+#Main 2 : zipper
+liste_a_zipper=(recupere_zipper_beta(creer_seq(new_line)))
 zipper_html(liste_a_zipper,sC)
+
+#Main 3 : write coloring sequence
+for i in range(1,len(ligne)) :	#We start at 1 because the first line of the file is the name of the fasta file, so we are not interested
+	list_line=list(ligne[i])
+	sdl=print_aa(list_line,saut_de_ligne)
+	saut_de_ligne=sdl
+
 
 #printing of legends
 print("printing legends..")
@@ -341,7 +306,6 @@ sC.write("<br>")
 col_isoleucine="<FONT COLOR="+isoleucine+"> index isoleucine </FONT>"
 sC.write(col_isoleucine)
 sC.write("<br>")
-createur_fin_html(sC)
 
 #or list_possible_domaine[0] in Spe and list_possible_domaine[len(list_possible_domaine)-1] in Hydrophobes or list_possible_domaine[0] in Hydrophobes and list_possible_domaine[len(list_possible_domaine)-1] in Spe :
 
@@ -385,6 +349,6 @@ if term == 'y' :
 else :
 	print(" you will find you're folder .html at the same place than Color_prot.py")
 
-
-sC.close()
+createur_fin_html(sC)
 s.close()
+sC.close()
