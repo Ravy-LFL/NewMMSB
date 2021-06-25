@@ -97,6 +97,9 @@ def couleur_background(sC) :
 def mep_tab(sC) :
 	sC.write("<style> table { border-collapse: collapse; } </style>")
 	sC.write("<style> td { border: 1px solid black; } </style>")
+	sC.write("<style> h1 { font-family: Monospace; font-size:14pt; font-weight:normal; } </style>")
+	sC.write("<style> .h2 { letter-spacing : -0.009em; } </style>")
+
 
 
 def createur_fin_html(sC):
@@ -145,14 +148,14 @@ def recupere_domaine(seq_aa):		#Return a list of potential transmembrane domain,
 	a=0
 	list_a_renvoyer=[]
 	taux_acceptation=70
-	while a!=len(seq_aa)-24:
+	while a!=len(seq_aa)-29:
 		etat = False
 		etat_acceptation = False
 		list_possible_domaine =[]
 		compteur_hydrophobe = 0
 		compteur_autres= 0
 		chaine_a_renvoyer = ""
-		for i in range(a,a+24):
+		for i in range(a,a+29):
 			list_possible_domaine.append(seq_aa[i])
 		for j in list_possible_domaine:
 			if j in Hydrophobes :
@@ -162,9 +165,9 @@ def recupere_domaine(seq_aa):		#Return a list of potential transmembrane domain,
 		taux_hydrophobe=(compteur_hydrophobe*100)/len(list_possible_domaine)
 		if  taux_hydrophobe >= 69 :
 			etat_acceptation= True
-		if list_possible_domaine[0] in Polaire or list_possible_domaine[len(list_possible_domaine)-1] in Polaire or list_possible_domaine[0] in Polaire and list_possible_domaine[len(list_possible_domaine)-1] in Polaire or list_possible_domaine[0] in Spe and list_possible_domaine[len(list_possible_domaine)-1] in Spe or list_possible_domaine[len(list_possible_domaine)-1] in Spe or list_possible_domaine[0] in Spe or list_possible_domaine[0] in Spe and list_possible_domaine[len(list_possible_domaine)-1] in Hydrophobes or list_possible_domaine[0] in Hydrophobes and list_possible_domaine[len(list_possible_domaine)-1] in Spe :
-			etat=True
-		if compteur_hydrophobe>compteur_autres and etat_acceptation == True and etat == True:
+		#if list_possible_domaine[0] in Polaire or list_possible_domaine[len(list_possible_domaine)-1] in Polaire or list_possible_domaine[0] in Polaire and list_possible_domaine[len(list_possible_domaine)-1] in Polaire or list_possible_domaine[0] in Spe and list_possible_domaine[len(list_possible_domaine)-1] in Spe or list_possible_domaine[len(list_possible_domaine)-1] in Spe or list_possible_domaine[0] in Spe or list_possible_domaine[0] in Spe and list_possible_domaine[len(list_possible_domaine)-1] in Hydrophobes or list_possible_domaine[0] in Hydrophobes and list_possible_domaine[len(list_possible_domaine)-1] in Spe :
+		#	etat=True
+		if compteur_hydrophobe>compteur_autres and etat_acceptation == True :#and etat == True:
 			for k in range(1,len(list_possible_domaine)-2) :
 						chaine_a_renvoyer+=list_possible_domaine[k]
 			list_a_renvoyer.append(chaine_a_renvoyer)
@@ -182,7 +185,6 @@ def domaine_html(domain_list,sC) :
 		sC.write("\t \t <td>")
 		domaine=("\t"+"\t"+i)
 		sC.write(domaine)
-		sC.write("*")
 		sC.write("\t \t </td> \n")
 		sC.write("\t </tr> \n")
 	sC.write("</table> \n \n")
@@ -207,35 +209,36 @@ def zipper_html(liste_a_zipper,sC):
 
 
 def print_aa(list_line,saut_de_ligne):
+	sC.write("<FONT SIZE=3pt face=Courier New class=h2>")
 	for k in range(0,len(list_line)-1) :
 		if list_line[k] in Basique :
-			terme="<Bas> <FONT SIZE=3pt face=Courier>"+list_line[k]+"</Bas>"
+			terme="<Bas>"+list_line[k]+"</Bas>"
 			sC.write(terme)
 		elif list_line[k] in Acide :
-			terme="<Aci> <FONT SIZE=3pt face=Courier>"+list_line[k]+"</Aci>"
+			terme="<Aci>"+list_line[k]+"</Aci>"
 			sC.write(terme)
 		elif list_line[k] in Hydrophobes and list_line[k]=='L':
-			terme="<Leu> <FONT SIZE=3pt face=Courier>"+list_line[k]+"</Leu>"
+			terme="<Leu>"+list_line[k]+"</Leu>"
 			sC.write(terme)
 		elif list_line[k] in Hydrophobes and list_line[k] == 'I':
-			terme="<Iso> <FONT SIZE=3pt face=Courier>"+list_line[k]+"</Iso>"
+			terme="<Iso>"+list_line[k]+"</Iso>"
 			sC.write(terme)
 		elif list_line[k] in Hydrophobes and list_line[k]!='L' and  list_line[k]!='I':
-			terme="<Hydro> <FONT SIZE=3pt face=Courier>"+list_line[k]+"</Hydro>"
+			terme="<Hydro>"+list_line[k]+"</Hydro>"
 			sC.write(terme)
 		elif list_line[k] in Spe :
-			terme="<SPe> <FONT SIZE=3pt face=Courier>"+list_line[k]+"</SPe>"
+			terme="<SPe>"+list_line[k]+"</SPe>"
 			sC.write(terme)
 		elif list_line[k] in Polaire :
-			terme="<POlaire> <FONT SIZE=3pt face=Courier>"+list_line[k]+"</POlaire>"
+			terme="<POlaire>"+list_line[k]+"</POlaire>"
 			sC.write(terme)
 		elif list_line[k] in Cys :
-			terme="<CYsteine> <FONT SIZE=3pt face=Courier>"+list_line[k]+"</CYsteine>"
+			terme="<CYsteine>"+list_line[k]+"</CYsteine>"
 			sC.write(terme)
 		elif list_line[k] == "\t" or list_line[k]=="\n" :
 			sC.write("")
 		else :
-			terme="<FONT SIZE=2pt face=Times New Roman>"+list_line[k]+"</FONT>"
+			terme="<FONT SIZE=2pt face=Times New Roman class=h2>"+list_line[k]+"</FONT>"
 			sC.write(terme)
 		saut_de_ligne+=1
 		if saut_de_ligne==nb_aa_sur_ligne+1:
