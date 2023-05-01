@@ -12,4 +12,3 @@ This script is use to color a amino acid sequence depending on their physical an
 ## Usage :
 `python3 Color_Prot.py input.fasta`
 
-
