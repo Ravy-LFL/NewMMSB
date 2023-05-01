@@ -9,13 +9,13 @@ This repository have the script made during this internship.
 
 This script is use to color a amino acid sequence depending on their physical and chemical characteristics. It produce an HTML file which have the differents outputs.
 
-## Usage :
+#### Usage :
 `python3 Color_Prot.py input.fasta`
 
 ### add_color.py
 
 `add_color.py` is a script use to color the sequence as `Color_Prot.py` but it is diplay directly on the terminal.
 
-## Usage :
+#### Usage :
 `python3 add_color.py input.fasta`
 
