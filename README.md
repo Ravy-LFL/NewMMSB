@@ -3,3 +3,6 @@
 ## Contents
 
 This repository have the script made during this internship.
+`color_prot.py` and `script_deplacement_chimiques` are the final scripts. For the latest one, a README is present in the folder.
+
+
